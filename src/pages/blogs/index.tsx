@@ -4,8 +4,7 @@ import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useQuery } from '@tanstack/react-query'
 
-import { Input } from "antd"
-const { Search } = Input
+import { Pagination } from "antd";
 
 interface BlogProps {
   id: number,
@@ -28,18 +27,20 @@ const fetchBlogs = async (page: number) => {
 
 function BlogPage({ initialBlogs, initialPage }: BlogPageProps) {
   const router = useRouter()
-    const currentPage = Number(router.query.page) || initialPage
-    
-    const { data: blogs, isLoading, isError } = useQuery({
-      queryKey: ["blogs", currentPage],
-      queryFn: () => fetchBlogs(currentPage),
-      initialData: initialBlogs
-    })
+  const currentPage = Number(router.query.page) || initialPage
   
-    if (isLoading) return <p>Loading...</p>
-    if (isError) return <p>Failed to load blogs.</p>
+  const { data: blogs, isLoading, isError } = useQuery({
+    queryKey: ["blogs", currentPage],
+    queryFn: () => fetchBlogs(currentPage),
+    initialData: initialBlogs
+  })
+
+  if (isLoading) return <p>Loading...</p>
+  if (isError) return <p>Failed to load blogs.</p>
   
-    const onSearch = (value: string) => console.log(value);
+  const handlePageChange = (newPage: number) => {
+    router.push(`/blogs?page=${newPage}`)
+  }
 
   return (
     <main className='flex flex-col gap-8 md:gap-16 container py-6 md:py-12'>
@@ -49,32 +50,20 @@ function BlogPage({ initialBlogs, initialPage }: BlogPageProps) {
       </div>
 
       <div>
-        <div>
-          <div className='flex justify-center'>
-            <Search
-              placeholder="Search blog"
-              onSearch={onSearch}
-              size="large"
-              variant='outlined'
-              allowClear
-              style={{
-                maxWidth: "600px",
-                width: "full",
-              }}
-            />
-          </div>
-        </div>
-
-        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 py-8 md:py-16'>
+        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8'>
           {
             blogs.map((blog: BlogProps) => (
-              <div key={blog.id} className='w-full h-fit flex flex-col gap-2'>
+              <div key={blog.id} className='w-full h-fit flex flex-col gap-2 cursor-pointer'>
                 <div className='w-full aspect-video mb-2 bg-slate-300 rounded-md'></div>
                 <h2 className='text-l font-bold'>{blog.title}</h2>
                 <p className='text-slate-700 line-clamp-3'>{blog.body}</p>
               </div>
             ))
           }
+        </div>
+
+        <div className='my-8 md:my-16'>
+          <Pagination align="center" defaultCurrent={1} total={50} onChange={handlePageChange} />
         </div>
       </div>
     </main>
