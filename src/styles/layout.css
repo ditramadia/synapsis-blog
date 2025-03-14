@@ -1,0 +1,7 @@
+@tailwind utilities;
+
+@layer utilities {
+  .container {
+    @apply max-w-[1200px] w-11/12 mx-auto md:w-10/12;
+  }
+}
