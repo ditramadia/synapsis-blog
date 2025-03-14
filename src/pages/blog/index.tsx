@@ -1,7 +1,6 @@
-import React, { ChangeEvent } from 'react'
+import React from 'react'
 
-import { Input } from "antd"
-const { Search } = Input
+import BlogContainer from '@/components/blog/BlogContainer';
 
 function index() {
   const onSearch = (value: string) => console.log(value);
@@ -13,24 +12,9 @@ function index() {
         <p className='text-balance text-native-700'>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
       </div>
 
-      {/* Search bar and filter */}
       <div>
-        <div className='flex justify-center'>
-          <Search
-            placeholder="Search blog"
-            onSearch={onSearch}
-            size="large"
-            variant='outlined'
-            allowClear
-            style={{
-              maxWidth: "600px",
-              width: "full",
-            }}
-          />
-        </div>
+        <BlogContainer />
       </div>
-
-      {/* Posts */}
     </main>
   )
 }
