@@ -11,7 +11,10 @@ const config: Config = {
       colors: {
         native: {
           white: "#f2f2f2",
-          black: "#1b1b1b"
+          black: {
+            700: "#696969",
+            900: "#1b1b1b"
+          }
         }
       }
     },

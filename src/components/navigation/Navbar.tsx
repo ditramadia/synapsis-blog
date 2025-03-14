@@ -1,26 +1,9 @@
 import React from 'react'
-import Link from 'next/link'
 import NavbarItem from './NavbarItem'
 
+import navigation from '@/settings/navigation';
+
 function Navbar() {
-  const navigation = [
-    {
-      text: 'Blog',
-      url: '/blog'
-    },
-    {
-      text: 'About',
-      url: '/about'
-    },
-    {
-      text: 'Contact',
-      url: '/contact'
-    },
-    {
-      text: 'Sign In',
-      url: '/sign-in'
-    },
-  ]
 
   return (
     <div className='container py-4 md:py-6 flex flex-col md:flex-row md:justify-between items-center gap-2'>
