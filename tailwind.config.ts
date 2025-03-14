@@ -10,11 +10,9 @@ const config: Config = {
     extend: {
       colors: {
         native: {
-          white: "#f2f2f2",
-          black: {
-            700: "#696969",
-            900: "#1b1b1b"
-          }
+          100: "#f2f2f2",
+          700: "#696969",
+          900: "#1b1b1b"
         }
       }
     },
