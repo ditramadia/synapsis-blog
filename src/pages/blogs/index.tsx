@@ -13,33 +13,60 @@ interface BlogProps {
   body: string
 }
 
+interface BlogApiResponseProps {
+  data: BlogProps[]
+  currentPage: number
+  pageSize: number
+  totalPages: number
+  totalItems: number
+}
+
 interface BlogPageProps {
   initialBlogs: BlogProps[]
   initialPage: number
+  initialPageSize: number
+  totalPages: number
+  totalItems: number
 }
 
-const fetchBlogs = async (page: number) => {
-  const response = await axios.get(`https://gorest.co.in/public/v2/posts`, {
-    params: { page, per_page: 12 },
+const fetchBlogs = async (page: number, pageSize: number): Promise<BlogApiResponseProps> => {
+  const response: any = await axios.get(`https://gorest.co.in/public/v2/posts`, {
+    params: { page, per_page: pageSize },
   })
-  return response.data
+
+  return {
+    data: response.data,
+    currentPage: Number(response.headers["x-pagination-page"]) || page,
+    pageSize: Number(response.headers["x-pagination-limit"]) || 12,
+    totalPages: Number(response.headers["x-pagination-pages"]) || 1,
+    totalItems: Number(response.headers["x-pagination-total"]) || 50,
+  }
 }
 
-function BlogPage({ initialBlogs, initialPage }: BlogPageProps) {
+function BlogPage({ initialBlogs, initialPage, initialPageSize, totalPages, totalItems }: BlogPageProps) {
   const router = useRouter()
   const currentPage = Number(router.query.page) || initialPage
+  const pageSize = Number(router.query.pageSize) || initialPageSize
   
-  const { data: blogs, isLoading, isError } = useQuery({
-    queryKey: ["blogs", currentPage],
-    queryFn: () => fetchBlogs(currentPage),
-    initialData: initialBlogs
+  const { data, isLoading, isError } = useQuery<BlogApiResponseProps>({
+    queryKey: ["blogs", currentPage, pageSize],
+    queryFn: () => fetchBlogs(currentPage, pageSize),
+    initialData: {
+      data: initialBlogs,
+      totalPages,
+      pageSize: initialPageSize,
+      currentPage: initialPage,
+      totalItems,
+    }
   })
+
+  const blogs = data.data
 
   if (isLoading) return <p>Loading...</p>
   if (isError) return <p>Failed to load blogs.</p>
-  
-  const handlePageChange = (newPage: number) => {
-    router.push(`/blogs?page=${newPage}`)
+
+  const handlePageChange = (newPage: number, newPageSize: number) => {
+    router.push(`/blogs?page=${newPage}&pageSize=${newPageSize}`)
   }
 
   return (
@@ -63,7 +90,7 @@ function BlogPage({ initialBlogs, initialPage }: BlogPageProps) {
         </div>
 
         <div className='my-8 md:my-16'>
-          <Pagination align="center" defaultCurrent={1} total={50} onChange={handlePageChange} />
+          <Pagination align="center" defaultCurrent={1} pageSize={pageSize} pageSizeOptions={[8, 12, 16]} total={totalItems} onChange={handlePageChange}/>
         </div>
       </div>
     </main>
@@ -72,12 +99,16 @@ function BlogPage({ initialBlogs, initialPage }: BlogPageProps) {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const page = Number(context.query.page) || 1
-  const initialBlogs = await fetchBlogs(page)
+  const pageSize = Number(context.query.pageSize) || 12
+  const { data: initialBlogs, totalPages, totalItems } = await fetchBlogs(page, pageSize)
 
   return {
     props: {
       initialBlogs,
-      initialPage: page
+      initialPage: page,
+      initialPageSize: pageSize,
+      totalPages,
+      totalItems
     }
   }
 }
