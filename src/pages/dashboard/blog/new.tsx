@@ -1,12 +1,12 @@
 import React from 'react'
-import { GetServerSideProps } from 'next'
 import axios from 'axios'
 import Head from 'next/head'
-import Link from 'next/link'
 import { z } from 'zod'
 import { Controller, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
+import { useSelector } from 'react-redux'
+import { RootState } from '@/store'
 
 import { Button, Input } from 'antd'
 const { TextArea } = Input;
@@ -18,39 +18,16 @@ interface BlogProps {
   body: string
 }
 
-interface BlogDetailProps {
-  blog: BlogProps
-}
-
-const fetchBlog = async (id: string) => {
-  try {
-    const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/v2/posts/${id}`, {
-      headers: {
-        Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
-      }
-    })
-    
-    return {
-      data: response.data
-    }
-  } catch (error) {
-    // TODO: Handle error
-    console.error('Error fetching blog:', error)
-    return {
-      data: [],
-    }
-  }
-}
-
 const blogSchema = z.object({
-  id: z.number(),
   author_id: z.number(),
   title: z.string().nonempty("Title is required"),
   body: z.string().nonempty("Body is required")
 })
 
-function BlogDetailPage({ blog }: BlogDetailProps) {
+function BlogDetailPage() {
   const router = useRouter()
+
+  const user_id = useSelector((state: RootState) => state.auth.user.id);
 
   const { 
     control,
@@ -59,19 +36,15 @@ function BlogDetailPage({ blog }: BlogDetailProps) {
   } = useForm({
     resolver: zodResolver(blogSchema),
     defaultValues: {
-      id: blog.id,
-      author_id: blog.user_id,
-      title: blog.title,
-      body: blog.body
+      author_id: user_id
     }
   })
 
-  const handleSave = async (data: any) => {
-    const { id, author_id, title, body } = data
+  const handlePost = async (data: any) => {
+    const { author_id, title, body } = data
     
     try {
-      await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/public/v2/posts/${blog.id}`, { 
-        id,
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/public/v2/posts`, { 
         user_id: author_id,
         title,
         body
@@ -81,7 +54,8 @@ function BlogDetailPage({ blog }: BlogDetailProps) {
         }
        })
 
-       router.push(`/dashboard/blog/${blog.id}`)
+       const id = response.data.id
+       router.push(`/dashboard/blog/${id}`)
     } catch (error: any) {
       console.error("Error", error)
     }
@@ -96,30 +70,8 @@ function BlogDetailPage({ blog }: BlogDetailProps) {
       <main className='container-small py-8 md:py-16'>
         <h1 className='mb-8 text-2xl font-bold text-main-500'>Edit Blog</h1>
 
-        <form onSubmit={handleSubmit(handleSave)} className='flex flex-col gap-4 md:gap-8'>
+        <form onSubmit={handleSubmit(handlePost)} className='flex flex-col gap-4 md:gap-8'>
           <div className='flex flex-col gap-4 md:gap-8'>
-            <div className='flex flex-col gap-1'>
-              <label>ID</label>
-              <Controller 
-                name="id"
-                control={control}
-                render={({field}) => (
-                  <Input 
-                    size='large'
-                    style={{
-                      fontFamily: "Poppins, sans-serif"
-                    }}
-                    placeholder="ID" 
-                    type='text' 
-                    readOnly 
-                    disabled 
-                    {...field} />
-                )}
-              />
-              {
-                errors.id && <p className='text-sm text-red-500'>{errors.id.message}</p> 
-              }
-            </div>
             <div className='flex flex-col gap-1'>
               <label>Author ID</label>
               <Controller 
@@ -188,35 +140,14 @@ function BlogDetailPage({ blog }: BlogDetailProps) {
           </div>
 
           <div className='flex flex-wrap justify-end gap-2'>
-            <div className='w-20'>
-              <Button color='orange' type="primary" size='large' block={true} htmlType='submit'>Save</Button>
+            <div className='w-20' onClick={handlePost}>
+              <Button color='orange' type="primary" size='large' block={true} htmlType='submit'>Post</Button>
             </div>
-            <Link href={`/dashboard/blog/${blog.id}`}>
-              <div className='w-20'>
-                <Button color='danger' type="default" size='large' block={true}>Cancel</Button>
-              </div>
-            </Link>
           </div>
         </form>
       </main>
     </>
   )
-}
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  console.log("Context Params", context.params)
-  
-  const { id } = context.params as { id: string }
-
-  if (!id || isNaN(Number(id))) {
-    return { notFound: true }
-  }
-
-  const { data: blog } = await fetchBlog(id)
-
-  return {
-    props: { blog }
-  }
 }
 
 export default BlogDetailPage

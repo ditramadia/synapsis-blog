@@ -3,11 +3,11 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { GetServerSideProps } from 'next'
 import axios from 'axios'
-
-import { CompassFilled, DeleteFilled, EditFilled, EyeFilled } from '@ant-design/icons'
 import { useRouter } from 'next/router'
 import { useQuery } from '@tanstack/react-query'
-import { Pagination } from 'antd'
+
+import { CompassFilled, EditFilled, EyeFilled } from '@ant-design/icons'
+import { Button, Pagination } from 'antd'
 
 interface BlogProps {
   id: number,
@@ -90,40 +90,48 @@ function DashboardPage({ initialBlogs, initialPage, initialPageSize, totalPages,
       <main className='flex flex-col gap-8 md:gap-16 container py-6 md:py-12'>
         <h1 className='text-3xl font-bold text-main-500 text-center'>Dashboard</h1>
 
-        <div className='flex flex-col gap-2'>
-          <div className='grid grid-cols-8 md:grid-cols-12 gap-2 py-1 px-2 md:py-2 md:px-4 bg-native-200 rounded-md'>
-            <span className='col-span-2 md:col-span-1'>ID</span>
-            <span className='col-span-4 md:col-span-9'>Title</span>
-            <span className='col-span-2'>Action</span>
-          </div>
-          {
-            blogs.map((blog: BlogProps) => (
-              <div key={blog.id} className='grid grid-cols-8 md:grid-cols-12 gap-2 p-2 md:p-4'>
-                <span className='col-span-2 md:col-span-1'>{blog.id}</span>
-                <span className='col-span-4 md:col-span-9'>{blog.title}</span>
-                <div className='flex flex-wrap gap-1 col-span-2'>
-                  <a href={`/blog/${blog.id}`} target='_blank' rel="noopener noreferrer">
-                    <div className='flex items-center justify-center w-8 h-8 bg-teal-500 rounded-md cursor-pointer'>
-                      <CompassFilled className='text-native-100' />
-                    </div>
-                  </a>
-                  <Link href={`/dashboard/blog/${blog.id}`}>
-                    <div className='flex items-center justify-center w-8 h-8 bg-blue-400 rounded-md cursor-pointer'>
-                      <EyeFilled className='text-native-100' />
-                    </div>
-                  </Link>
-                  <Link href={`/dashboard/blog/${blog.id}/edit`}>
-                    <div className='flex items-center justify-center w-8 h-8 bg-orange-400 rounded-md cursor-pointer'>
-                      <EditFilled className='text-native-100' />
-                    </div>
-                  </Link>
+        <div>
+          <Link href='/dashboard/blog/new'>
+            <div className='w-32 ml-auto mb-4'>
+              <Button type="primary" size='large' block={true} htmlType='submit'>+ New Blog</Button>
+            </div>
+          </Link>
+
+          <div className='flex flex-col gap-2'>
+            <div className='grid grid-cols-8 md:grid-cols-12 gap-2 py-1 px-2 md:py-2 md:px-4 bg-native-200 rounded-md'>
+              <span className='col-span-2 md:col-span-1'>ID</span>
+              <span className='col-span-4 md:col-span-9'>Title</span>
+              <span className='col-span-2'>Action</span>
+            </div>
+            {
+              blogs.map((blog: BlogProps) => (
+                <div key={blog.id} className='grid grid-cols-8 md:grid-cols-12 gap-2 p-2 md:p-4'>
+                  <span className='col-span-2 md:col-span-1'>{blog.id}</span>
+                  <span className='col-span-4 md:col-span-9'>{blog.title}</span>
+                  <div className='flex flex-wrap gap-1 col-span-2'>
+                    <a href={`/blog/${blog.id}`} target='_blank' rel="noopener noreferrer">
+                      <div className='flex items-center justify-center w-8 h-8 bg-teal-500 rounded-md cursor-pointer'>
+                        <CompassFilled className='text-native-100' />
+                      </div>
+                    </a>
+                    <Link href={`/dashboard/blog/${blog.id}`}>
+                      <div className='flex items-center justify-center w-8 h-8 bg-blue-400 rounded-md cursor-pointer'>
+                        <EyeFilled className='text-native-100' />
+                      </div>
+                    </Link>
+                    <Link href={`/dashboard/blog/${blog.id}/edit`}>
+                      <div className='flex items-center justify-center w-8 h-8 bg-orange-400 rounded-md cursor-pointer'>
+                        <EditFilled className='text-native-100' />
+                      </div>
+                    </Link>
+                  </div>
                 </div>
-              </div>
-            ))
-          }
-          
-          <div className='my-8 md:my-16'>
-            <Pagination align="center" defaultCurrent={1} pageSize={pageSize} pageSizeOptions={[8, 12, 16]} total={totalItems} onChange={handlePageChange}/>
+              ))
+            }
+            
+            <div className='my-8 md:my-16'>
+              <Pagination align="center" defaultCurrent={1} pageSize={pageSize} pageSizeOptions={[8, 12, 16]} total={totalItems} onChange={handlePageChange}/>
+            </div>
           </div>
         </div>
       </main>
