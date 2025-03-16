@@ -69,7 +69,6 @@ function BlogComments({ blogId }: BlogCommentsProps) {
 
       await fetchComments()
       reset()
-      
     } catch (error) {
       setError("comment", {
         type: "server",
@@ -88,6 +87,7 @@ function BlogComments({ blogId }: BlogCommentsProps) {
             comments.map((comment) => (
               <BlogComment 
                 key={comment.id}
+                id={comment.id}
                 name={comment.name}
                 body={comment.body}
               />
