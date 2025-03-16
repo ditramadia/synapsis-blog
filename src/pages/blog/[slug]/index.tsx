@@ -132,7 +132,19 @@ function index({ blog, comments }: BlogDetailProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { id } = context.params as { id: string}
+  const { slug } = context.params as { slug: string }
+  
+  if (!slug) {
+    return { notFound: true }
+  }
+
+  const parts = slug.split("-")
+  const id = parts[parts.length - 1]
+  console.log(id)
+
+  if (!id || isNaN(Number(id))) {
+    return { notFound: true }
+  }
 
   const { data: blog} = await fetchBlog(id)
   const { data: comments } = await fetchComments(id)

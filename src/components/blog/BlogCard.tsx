@@ -8,11 +8,15 @@ interface BlogCardProps {
   body: string
 }
 
+const generateSlug = (title: string) => {
+  return title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")
+}
+
 function BlogCard(props: BlogCardProps) {
   const { id, user_id, title, body } = props
 
   return (
-    <Link href={`/blog/${id}`}>
+    <Link href={`/blog/${generateSlug(title)}-${id}`}>
       <div className='w-full h-fit flex flex-col gap-2 cursor-pointer'>
         {/* TODO: Add an actual random image */}
         <div className='w-full aspect-video mb-2 bg-slate-300 rounded-md'></div>
