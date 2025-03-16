@@ -181,7 +181,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const parts = slug.split("-")
   const id = parts[parts.length - 1]
-  console.log(id)
 
   if (!id || isNaN(Number(id))) {
     return { notFound: true }
