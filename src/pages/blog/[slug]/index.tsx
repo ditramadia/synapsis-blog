@@ -118,6 +118,11 @@ function index({ blog, user, comments }: BlogDetailProps) {
         </div>
         
         <div className='flex flex-col md:flex-row md:justify-between gap-4'>
+          <div>
+            <p className='text-slate-400'>Posted on:</p>
+            <p>February 4, 2025 12:00 AM</p>
+          </div>
+          
           <div className='flex gap-4'>
             <div className='relative w-12 h-12 rounded-full overflow-hidden'>
               <Image 
@@ -131,11 +136,6 @@ function index({ blog, user, comments }: BlogDetailProps) {
               <p className='font-bold'>{user.name}</p>
               <p className='text-slate-400'>Author</p>
             </div>
-          </div>
-
-          <div>
-            <p className='text-slate-400'>Posted on:</p>
-            <p>February 4, 2025 12:00 AM</p>
           </div>
         </div>
 

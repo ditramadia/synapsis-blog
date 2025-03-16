@@ -1,4 +1,6 @@
 import type { AppProps } from 'next/app'
+import { Provider } from 'react-redux';
+import store from '@/store';
 
 import '@fontsource/poppins';
 import '@/styles/globals.css'
@@ -12,13 +14,19 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 const queryClient = new QueryClient()
 
-export default function App({ Component, pageProps }: AppProps) {
-  return <>
-  <Navbar />
-  <QueryClientProvider client={queryClient}>
-    <Component {...pageProps} />
-    <ReactQueryDevtools initialIsOpen={false} />
-  </QueryClientProvider>
-  <Footer />
-  </>
+type CustomAppProps = AppProps & {
+  Component: AppProps["Component"] & { noLayout?: boolean}
+}
+
+export default function App({ Component, pageProps }: CustomAppProps) {
+  return (
+    <Provider store={store}>
+      {!Component.noLayout && <Navbar />}
+      <QueryClientProvider client={queryClient}>
+        <Component {...pageProps} />
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
+      {!Component.noLayout && <Footer />}
+    </Provider>
+  )
 }
