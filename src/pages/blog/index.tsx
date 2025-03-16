@@ -31,19 +31,27 @@ interface BlogPageProps {
   totalItems: number
 }
 
-const fetchBlogs = async (page: number, pageSize: number): Promise<BlogApiResponseProps> => {
-  await new Promise((resolve) => setTimeout(resolve, 3000));
+const fetchBlogs = async (page: number, pageSize: number) => {
+  try {
+    const response = await axios.get(`https://gorest.co.in/public/v2/posts`, {
+      params: { page, per_page: pageSize },
+    })
   
-  const response: any = await axios.get(`https://gorest.co.in/public/v2/posts`, {
-    params: { page, per_page: pageSize },
-  })
+    return {
+      data: response.data,
+      currentPage: Number(response.headers["x-pagination-page"]) || page,
+      pageSize: Number(response.headers["x-pagination-limit"]) || 12,
+      totalPages: Number(response.headers["x-pagination-pages"]) || 1,
+      totalItems: Number(response.headers["x-pagination-total"]) || 50,
+    }
+  } catch (error) {
+    // TODO: Handle error
+    console.error("Error fetching blogs:", error)
 
-  return {
-    data: response.data,
-    currentPage: Number(response.headers["x-pagination-page"]) || page,
-    pageSize: Number(response.headers["x-pagination-limit"]) || 12,
-    totalPages: Number(response.headers["x-pagination-pages"]) || 1,
-    totalItems: Number(response.headers["x-pagination-total"]) || 50,
+    return {
+      data: [],
+      error: true
+    }
   }
 }
 
@@ -52,7 +60,7 @@ function BlogPage({ initialBlogs, initialPage, initialPageSize, totalPages, tota
   const currentPage = Number(router.query.page) || initialPage
   const [pageSize, setPageSize] = useState<number>(12)
 
-  const { data, isFetching, isError } = useQuery<BlogApiResponseProps>({
+  const { data, isFetching, isError } = useQuery({
     queryKey: ["blogs", currentPage, pageSize],
     queryFn: () => fetchBlogs(currentPage, pageSize),
     initialData: {
