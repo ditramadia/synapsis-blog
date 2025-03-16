@@ -16,14 +16,6 @@ interface BlogProps {
   body: string
 }
 
-interface BlogApiResponseProps {
-  data: BlogProps[]
-  currentPage: number
-  pageSize: number
-  totalPages: number
-  totalItems: number
-}
-
 interface BlogPageProps {
   initialBlogs: BlogProps[]
   initialPage: number
@@ -34,10 +26,12 @@ interface BlogPageProps {
 
 const fetchBlogs = async (page: number, pageSize: number) => {
   try {
-    const response = await axios.get(`https://gorest.co.in/public/v2/posts`, {
+    const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/v2/posts`, {
+      headers: {
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
+      },
       params: { page, per_page: pageSize },
     })
-  
     return {
       data: response.data,
       currentPage: Number(response.headers["x-pagination-page"]) || page,
