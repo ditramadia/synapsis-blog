@@ -1,6 +1,7 @@
 import React from 'react'
 import { GetServerSideProps } from 'next'
 import axios from 'axios'
+import Head from 'next/head'
 
 interface BlogProps {
   id: number,
@@ -30,30 +31,35 @@ const fetchBlog = async (id: string) => {
 
 function index({ blog }: BlogDetailProps) {
   return (
-    <main className='flex flex-col gap-6 container-small py-6 md:py-12'>
-      <div className='w-full aspect-video bg-slate-300 rounded-md'></div>
-      
-      <div className='flex flex-col md:flex-row md:justify-between gap-4'>
-        <div className='flex gap-4'>
-          {/* TODO: Replace with an image */}
-          <div className='w-12 h-12 bg-slate-300 rounded-full'></div>
+    <>
+      <Head>
+        <title>{blog.title}</title>
+      </Head>
+      <main className='flex flex-col gap-6 container-small py-6 md:py-12'>
+        <div className='w-full aspect-video bg-slate-300 rounded-md'></div>
+        
+        <div className='flex flex-col md:flex-row md:justify-between gap-4'>
+          <div className='flex gap-4'>
+            {/* TODO: Replace with an image */}
+            <div className='w-12 h-12 bg-slate-300 rounded-full'></div>
+            <div>
+              <p className='font-bold'>Ditra Amadia</p>
+              <p>Marketing Expert</p>
+            </div>
+          </div>
+
           <div>
-            <p className='font-bold'>Ditra Amadia</p>
-            <p>Marketing Expert</p>
+            <p>Posted on:</p>
+            <p>February 4, 2025 12:00 AM</p>
           </div>
         </div>
 
-        <div>
-          <p>Posted on:</p>
-          <p>February 4, 2025 12:00 AM</p>
+        <div className='flex flex-col gap-4'>
+          <h1 className='text-3xl font-bold'>{blog.title}</h1>
+          <p className='text-justify'>{blog.body}</p>
         </div>
-      </div>
-
-      <div className='flex flex-col gap-4'>
-        <h1 className='text-3xl font-bold'>{blog.title}</h1>
-        <p className='text-justify'>{blog.body}</p>
-      </div>
-    </main>
+      </main>
+    </>
   )
 }
 
