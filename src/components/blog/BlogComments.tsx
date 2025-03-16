@@ -4,6 +4,8 @@ import axios from 'axios'
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
 
 import { Input, Button } from "antd";
 const { TextArea } = Input;
@@ -22,6 +24,7 @@ const commentSchema = z.object({
 })
 
 function BlogComments({ blogId }: BlogCommentsProps) {
+  const user = useSelector((state: RootState) => state.auth.user);
   const [comments, setComments] = useState<CommentProps[]>([])
 
   const fetchComments = async () => {
@@ -49,7 +52,11 @@ function BlogComments({ blogId }: BlogCommentsProps) {
     reset,
     formState: { errors }
   } = useForm({
-    resolver: zodResolver(commentSchema)
+    resolver: zodResolver(commentSchema),
+    defaultValues: {
+      name: user?.name || "",
+      email: user?.email || ""
+    }
   })
 
   const handleComment = async (data: any) => {
