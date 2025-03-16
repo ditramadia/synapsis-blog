@@ -98,35 +98,28 @@ function index({ blog, comments }: BlogDetailProps) {
         </div>
 
         <div className='flex flex-col gap-6'>
-          <h2 className='font-bold text-lg'>Comments ({comments.length})</h2>
-          <div className='flex flex-col gap-4'>
-            {
-              comments.map((comment) => (
-                <div key={comment.id} className='flex gap-4'>
-                  {/* TODO: Replace with an image */}
-                  <div className='w-8 h-8 mt-2 bg-slate-300 rounded-full'></div>
+          {/* TODO: Add comments pagination */}
+          <h2 className='font-bold text-lg'>Comments</h2>
+          {
+            comments.length ?
+            <div className='flex flex-col gap-4'>
+              {
+                comments.map((comment) => (
+                  <div key={comment.id} className='flex gap-4'>
+                    {/* TODO: Replace with an image */}
+                    <div className='w-8 h-8 mt-2 bg-slate-300 rounded-full'></div>
 
-                  <div>
-                    <p>{comment.name}</p>
-                    <p className='text-slate-400'>{comment.body}</p>
+                    <div>
+                      <p>{comment.name}</p>
+                      <p className='text-slate-400'>{comment.body}</p>
+                    </div>
                   </div>
-                </div>
-              ))
-            }
-            {
-              comments.map((comment) => (
-                <div key={comment.id} className='flex gap-4'>
-                  {/* TODO: Replace with an image */}
-                  <div className='w-8 h-8 mt-2 bg-slate-300 rounded-full'></div>
-
-                  <div>
-                    <p>{comment.name}</p>
-                    <p className='text-slate-400'>{comment.body}</p>
-                  </div>
-                </div>
-              ))
-            }
-          </div>
+                ))
+              }
+            </div> :
+            <p className='text-slate-400'>No comments yet</p>
+          }
+          
 
           <div className='mx-auto'>
             {/* TODO: Detect if user is signed in */}
