@@ -28,7 +28,7 @@ const fetchBlogs = async (page: number, pageSize: number) => {
   try {
     const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/v2/posts`, {
       headers: {
-        Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
       },
       params: { page, per_page: pageSize },
     })

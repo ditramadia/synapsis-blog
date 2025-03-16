@@ -1,12 +1,12 @@
 import React from 'react'
 import { Controller, useForm } from 'react-hook-form';
 import Head from 'next/head'
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useDispatch } from 'react-redux';
 import { signin } from '@/store/authSlice';
+import axios from 'axios';
 
 import { Input } from "antd";
 import { Button } from "antd";
@@ -21,6 +21,7 @@ function SignInPage() {
   const { 
     control,
     handleSubmit,
+    setError,
     formState: { errors }
   } = useForm({
     resolver: zodResolver(signInSchema)
@@ -29,9 +30,27 @@ function SignInPage() {
   const dispatch = useDispatch()
   const router = useRouter()
 
-  const handleSignIn = () => {
-    dispatch(signin())
-    router.push('/')
+  const handleSignIn = async (data: any) => {
+    const { email, password } = data
+    
+    try {
+      const { data } = await axios.post("/api/sign-in", { email, password })
+
+      dispatch(signin(data.data))
+      router.push('/')
+    } catch (error: any) {
+      if (error.code === 500) {
+        setError("password", {
+          type: "server",
+          message: "Internal server error. Try again later",
+        });
+      } else {
+        setError("password", {
+          type: "server",
+          message: "Invalid email or password",
+        });
+      }
+    }
   }
 
   return (
@@ -94,7 +113,7 @@ function SignInPage() {
             <div className='w-full'>
               <Button type="primary" size='large' block={true} htmlType='submit'>Sign In</Button>
             </div>
-            <p className='text-sm'>Don&apos;t have an account? <Link href='/sign-up'><span className='text-main-500 underline'>Sign Up</span></Link></p>
+            {/* <p className='text-sm'>Don&apos;t have an account? <Link href='/sign-up'><span className='text-main-500 underline'>Sign Up</span></Link></p> */}
           </div>
         </form>
       </main>

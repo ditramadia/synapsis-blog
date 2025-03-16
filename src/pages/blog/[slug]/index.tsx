@@ -40,7 +40,7 @@ const fetchBlog = async (id: string) => {
   try {
     const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/v2/posts/${id}`, {
       headers: {
-        Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
       }
     })
     
@@ -60,7 +60,7 @@ const fetchUser = async (id: string) => {
   try {
     const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/v2/users/${id}`, {
       headers: {
-        Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
       }
     })
   
@@ -80,7 +80,7 @@ const fetchComments = async (id: string) => {
   try {
     const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/v2/posts/${id}/comments`, {
       headers: {
-        Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
       }
     })
   
@@ -96,7 +96,7 @@ const fetchComments = async (id: string) => {
   }
 }
 
-function index({ blog, user, comments }: BlogDetailProps) {
+function BlogDetailPage({ blog, user, comments }: BlogDetailProps) {
   return (
     <>
       <Head>
@@ -196,4 +196,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 }
 
-export default index
+export default BlogDetailPage

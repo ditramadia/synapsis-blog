@@ -1,13 +1,24 @@
 import React from 'react'
-import navigation from '@/settings/navigation';
+import navigation from '@/data/navigation';
 import Link from 'next/link';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store';
+import { signout } from '@/store/authSlice';
+import { useRouter } from 'next/navigation';
 
 import NavbarItem from './NavbarItem'
 
 function Navbar() {
+  const dispatch = useDispatch()
+  const router = useRouter()
+
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+  const role = useSelector((state: RootState) => state.auth.user.role);
+
+  const handleSignOut = async () => {
+    dispatch(signout())
+    router.push('/')
+  }
 
   return (
     <div className='container py-4 md:py-6 flex flex-col md:flex-row md:justify-between items-center gap-2'>
@@ -23,8 +34,13 @@ function Navbar() {
           )
         }
         {
+          isAuthenticated && role === 'admin' && <NavbarItem text="Dashboard" url="/dashboard" />
+        }
+        {
           isAuthenticated ?
-          <NavbarItem text="Dashboard" url="/dashboard" /> :
+          <div onClick={handleSignOut}>
+            <NavbarItem text="Sign Out"/>
+          </div>:
           <NavbarItem text="Sign In" url="/sign-in" />
         }
       </ul>
