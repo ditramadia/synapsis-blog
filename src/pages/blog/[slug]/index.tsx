@@ -6,20 +6,8 @@ import axios from 'axios'
 
 import BlogComments from '@/components/blog/BlogComments'
 
-interface BlogProps {
-  id: number,
-  user_id: number,
-  title: string,
-  body: string
-}
-
-interface UserProps {
-  id: number
-  name: string
-  email: string
-  gender: string
-  status: string
-}
+import BlogProps from '@/types/Blog'
+import UserProps from '@/types/User'
 
 interface BlogDetailProps {
   blog: BlogProps
@@ -38,7 +26,7 @@ const fetchBlog = async (id: string) => {
       data: response.data
     }
   } catch (error) {
-    // TODO: Handle error
+    // TODO: Navigate to Internal Server Error Page 
     console.error('Error fetching blog:', error)
     return {
       data: [],
@@ -58,8 +46,7 @@ const fetchUser = async (id: string) => {
       data: response.data
     }
   } catch (error) {
-    // TODO: Handle error
-    console.error('Error fetching blog comments:', error)
+    // TODO: Navigate to Internal Server Error Page 
     return {
       data: [],
     }
@@ -67,7 +54,6 @@ const fetchUser = async (id: string) => {
 }
 
 function BlogDetailPage({ blog, author }: BlogDetailProps) {
-
   return (
     <>
       <Head>

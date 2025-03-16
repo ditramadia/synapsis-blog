@@ -1,6 +1,5 @@
 import React from 'react'
 import Head from 'next/head'
-import Link from 'next/link';
 import { Controller, useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { z } from 'zod';
@@ -19,6 +18,9 @@ const signInSchema = z.object({
 })
 
 function SignInPage() {
+  const dispatch = useDispatch()
+  const router = useRouter()
+  
   const { 
     control,
     handleSubmit,
@@ -28,9 +30,6 @@ function SignInPage() {
   } = useForm({
     resolver: zodResolver(signInSchema)
   })
-
-  const dispatch = useDispatch()
-  const router = useRouter()
 
   const handleSignIn = async (data: any) => {
     const { email, password } = data
@@ -116,7 +115,6 @@ function SignInPage() {
             <div className='w-full'>
               <Button type="primary" size='large' block={true} htmlType='submit'>Sign In</Button>
             </div>
-            {/* <p className='text-sm'>Don&apos;t have an account? <Link href='/sign-up'><span className='text-main-500 underline'>Sign Up</span></Link></p> */}
           </div>
         </form>
       </main>

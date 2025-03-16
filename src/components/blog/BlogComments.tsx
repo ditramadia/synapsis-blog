@@ -9,11 +9,7 @@ import { Input, Button } from "antd";
 const { TextArea } = Input;
 import BlogComment from '@/components/blog/BlogComment'
 
-interface CommentProps {
-  id: number,
-  name: string,
-  body: string
-}
+import CommentProps from '@/types/Comment';
 
 interface BlogCommentsProps {
   blogId: number
@@ -98,7 +94,7 @@ function BlogComments({ blogId }: BlogCommentsProps) {
             ))
           }
         </div> :
-        <p className='text-slate-400'>No comments yet</p>
+        <p className='text-native-400'>No comments yet</p>
       }
 
       <div className='flex gap-4'>

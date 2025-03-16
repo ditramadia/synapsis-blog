@@ -11,14 +11,9 @@ import { useRouter } from 'next/navigation'
 import { Button, Input } from 'antd'
 const { TextArea } = Input;
 
-interface BlogProps {
-  id: number,
-  user_id: number,
-  title: string,
-  body: string
-}
+import BlogProps from '@/types/Blog'
 
-interface BlogDetailProps {
+interface BlogEditProps {
   blog: BlogProps
 }
 
@@ -34,7 +29,7 @@ const fetchBlog = async (id: string) => {
       data: response.data
     }
   } catch (error) {
-    // TODO: Handle error
+    // TODO: Navigate to Internal Server Error Page
     console.error('Error fetching blog:', error)
     return {
       data: [],
@@ -49,7 +44,7 @@ const blogSchema = z.object({
   body: z.string().nonempty("Body is required")
 })
 
-function BlogDetailPage({ blog }: BlogDetailProps) {
+function BlogDetailPage({ blog }: BlogEditProps) {
   const router = useRouter()
 
   const { 
@@ -81,8 +76,10 @@ function BlogDetailPage({ blog }: BlogDetailProps) {
         }
        })
 
+       // TODO: Open Toast
        router.push(`/dashboard/blog/${blog.id}`)
     } catch (error: any) {
+      // TODO: Open Toast
       console.error("Error", error)
     }
   }

@@ -8,14 +8,9 @@ import { useRouter } from 'next/navigation'
 import { Button, Input } from 'antd'
 const { TextArea } = Input;
 
-interface BlogProps {
-  id: number,
-  user_id: number,
-  title: string,
-  body: string
-}
+import BlogProps from '@/types/Blog'
 
-interface BlogDetailProps {
+interface BlogDetailPageProps {
   blog: BlogProps
 }
 
@@ -31,15 +26,14 @@ const fetchBlog = async (id: string) => {
       data: response.data
     }
   } catch (error) {
-    // TODO: Handle error
-    console.error('Error fetching blog:', error)
+    // TODO: Navigate to Internal Server Error
     return {
       data: [],
     }
   }
 }
 
-function BlogDetailPage({ blog }: BlogDetailProps) {
+function BlogDetailPage({ blog }: BlogDetailPageProps) {
   const router = useRouter()
   
   const handleDeleteBlog = async () => {
@@ -50,8 +44,10 @@ function BlogDetailPage({ blog }: BlogDetailProps) {
         }
       })
 
+      // TODO: Open Toast
       router.push(`/dashboard`)
     } catch (error) {
+      // TODO: Open Toast
       console.error("Error", error)
     }
   }

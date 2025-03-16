@@ -9,12 +9,7 @@ import { useQuery } from '@tanstack/react-query'
 import { CompassFilled, EditFilled, EyeFilled } from '@ant-design/icons'
 import { Button, Pagination } from 'antd'
 
-interface BlogProps {
-  id: number,
-  user_id: number,
-  title: string,
-  body: string
-}
+import BlogProps from '@/types/Blog'
 
 interface BlogPageProps {
   initialBlogs: BlogProps[]
@@ -40,8 +35,7 @@ const fetchBlogs = async (page: number, pageSize: number) => {
       totalItems: Number(response.headers["x-pagination-total"]) || 50,
     }
   } catch (error) {
-    // TODO: Handle error
-    console.error("Error fetching blogs:", error)
+    // TODO: Navigate to Internal Server Error Page
 
     return {
       data: [],
@@ -55,7 +49,7 @@ function DashboardPage({ initialBlogs, initialPage, initialPageSize, totalPages,
   const currentPage = Number(router.query.page) || initialPage
   const [pageSize, setPageSize] = useState<number>(12)
 
-  const { data, isFetching, isError } = useQuery({
+  const { data, isError } = useQuery({
     queryKey: ["blogs", currentPage, pageSize],
     queryFn: () => fetchBlogs(currentPage, pageSize),
     initialData: {
@@ -69,9 +63,6 @@ function DashboardPage({ initialBlogs, initialPage, initialPageSize, totalPages,
   })
 
   const blogs = data.data
-
-  // TODO: Implement a better error message
-  if (isError) return <p>Failed to load blogs.</p>
 
   const handlePageChange = (newPage: number, newPageSize: number) => {
     window.scrollTo({ top: 0, behavior: "smooth" })
@@ -104,6 +95,11 @@ function DashboardPage({ initialBlogs, initialPage, initialPageSize, totalPages,
               <span className='col-span-2'>Action</span>
             </div>
             {
+              isError || !blogs.length ?
+              <div className='mx-auto py-20 text-center'>
+                <p className='text-xl font-bold text-native-400'>No Data Found</p>
+              </div> 
+              :
               blogs.map((blog: BlogProps) => (
                 <div key={blog.id} className='grid grid-cols-8 md:grid-cols-12 gap-2 p-2 md:p-4'>
                   <span className='col-span-2 md:col-span-1'>{blog.id}</span>
@@ -128,7 +124,6 @@ function DashboardPage({ initialBlogs, initialPage, initialPageSize, totalPages,
                 </div>
               ))
             }
-            
             <div className='my-8 md:my-16'>
               <Pagination align="center" defaultCurrent={1} pageSize={pageSize} pageSizeOptions={[8, 12, 16]} total={totalItems} onChange={handlePageChange}/>
             </div>

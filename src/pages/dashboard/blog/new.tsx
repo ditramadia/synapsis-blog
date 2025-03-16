@@ -11,20 +11,13 @@ import { RootState } from '@/store'
 import { Button, Input } from 'antd'
 const { TextArea } = Input;
 
-interface BlogProps {
-  id: number,
-  user_id: number,
-  title: string,
-  body: string
-}
-
 const blogSchema = z.object({
   author_id: z.number(),
   title: z.string().nonempty("Title is required"),
   body: z.string().nonempty("Body is required")
 })
 
-function BlogDetailPage() {
+function BlogCreatePage() {
   const router = useRouter()
 
   const user_id = useSelector((state: RootState) => state.auth.user.id);
@@ -54,9 +47,11 @@ function BlogDetailPage() {
         }
        })
 
+       // TODO: Open Toast
        const id = response.data.id
        router.push(`/dashboard/blog/${id}`)
     } catch (error: any) {
+      // TODO: Open Toast
       console.error("Error", error)
     }
   }
@@ -150,4 +145,4 @@ function BlogDetailPage() {
   )
 }
 
-export default BlogDetailPage
+export default BlogCreatePage

@@ -1,10 +1,7 @@
 import React from 'react'
 import Image from 'next/image'
 
-interface CommentProps {
-  name: string
-  body: string
-}
+import CommentProps from '@/types/Comment'
 
 function BlogComment({ name, body }: CommentProps) {
   return (
