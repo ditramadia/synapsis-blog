@@ -38,7 +38,7 @@ export default async function handler(
           email: data.email,
           name: data.name,
         },
-        token: process.env.NEXT_PUBLIC_PUBLIC_API_KEY
+        token: process.env.NEXT_PUBLIC_API_KEY
       }
     })
   } catch (error) {

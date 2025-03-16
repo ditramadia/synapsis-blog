@@ -7,6 +7,7 @@ import { z } from 'zod'
 import { Controller, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
+import useAuthRedirect from '@/hooks/useAuthRedirect'
 
 import { Button, Input } from 'antd'
 const { TextArea } = Input;
@@ -45,6 +46,8 @@ const blogSchema = z.object({
 })
 
 function BlogDetailPage({ blog }: BlogEditProps) {
+  useAuthRedirect()
+  
   const router = useRouter()
 
   const { 

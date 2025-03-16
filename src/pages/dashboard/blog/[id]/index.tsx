@@ -4,6 +4,7 @@ import axios from 'axios'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import useAuthRedirect from '@/hooks/useAuthRedirect'
 
 import { Button, Input } from 'antd'
 const { TextArea } = Input;
@@ -34,6 +35,8 @@ const fetchBlog = async (id: string) => {
 }
 
 function BlogDetailPage({ blog }: BlogDetailPageProps) {
+  useAuthRedirect()
+  
   const router = useRouter()
   
   const handleDeleteBlog = async () => {

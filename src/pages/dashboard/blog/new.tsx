@@ -7,6 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/store'
+import useAuthRedirect from '@/hooks/useAuthRedirect'
 
 import { Button, Input } from 'antd'
 const { TextArea } = Input;
@@ -18,9 +19,11 @@ const blogSchema = z.object({
 })
 
 function BlogCreatePage() {
+  useAuthRedirect()
+  
   const router = useRouter()
 
-  const user_id = useSelector((state: RootState) => state.auth.user.id);
+  const user_id = useSelector((state: RootState) => state.auth?.user?.id);
 
   const { 
     control,

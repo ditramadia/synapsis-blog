@@ -1,15 +1,16 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Head from 'next/head'
 import { Controller, useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { signin } from '@/store/authSlice';
 import axios from 'axios';
 
 import { Input } from "antd";
 import { Button } from "antd";
+import { RootState } from '@/store';
 const { Password }= Input
 
 const signInSchema = z.object({
@@ -20,6 +21,8 @@ const signInSchema = z.object({
 function SignInPage() {
   const dispatch = useDispatch()
   const router = useRouter()
+
+  const token = useSelector((state: RootState) => state.auth.token)
   
   const { 
     control,
@@ -54,6 +57,12 @@ function SignInPage() {
       }
     }
   }
+
+  useEffect(() => {
+    if (token) {
+      router.push("/")
+    }
+  }, [])
 
   return (
     <>

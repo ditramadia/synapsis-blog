@@ -5,6 +5,7 @@ import { GetServerSideProps } from 'next'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useQuery } from '@tanstack/react-query'
+import useAuthRedirect from '@/hooks/useAuthRedirect'
 
 import { CompassFilled, EditFilled, EyeFilled } from '@ant-design/icons'
 import { Button, Pagination } from 'antd'
@@ -45,6 +46,8 @@ const fetchBlogs = async (page: number, pageSize: number) => {
 }
 
 function DashboardPage({ initialBlogs, initialPage, initialPageSize, totalPages, totalItems }: BlogPageProps) {
+  useAuthRedirect()
+  
   const router = useRouter()
   const currentPage = Number(router.query.page) || initialPage
   const [pageSize, setPageSize] = useState<number>(12)
