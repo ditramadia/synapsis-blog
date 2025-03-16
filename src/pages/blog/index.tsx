@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { GetServerSideProps } from "next";
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useQuery } from '@tanstack/react-query'
 
 import { Pagination } from "antd";
+import BlogCard from '@/components/blog/BlogCard';
 
 interface BlogProps {
   id: number,
@@ -46,7 +47,7 @@ const fetchBlogs = async (page: number, pageSize: number): Promise<BlogApiRespon
 function BlogPage({ initialBlogs, initialPage, initialPageSize, totalPages, totalItems }: BlogPageProps) {
   const router = useRouter()
   const currentPage = Number(router.query.page) || initialPage
-  const pageSize = Number(router.query.pageSize) || initialPageSize
+  const [pageSize, setPageSize] = useState<number>(12)
   
   const { data, isLoading, isError } = useQuery<BlogApiResponseProps>({
     queryKey: ["blogs", currentPage, pageSize],
@@ -66,25 +67,22 @@ function BlogPage({ initialBlogs, initialPage, initialPageSize, totalPages, tota
   if (isError) return <p>Failed to load blogs.</p>
 
   const handlePageChange = (newPage: number, newPageSize: number) => {
-    router.push(`/blogs?page=${newPage}&pageSize=${newPageSize}`)
+    setPageSize(newPageSize)
+    router.push(`/blog?page=${newPage}`)
   }
 
   return (
     <main className='flex flex-col gap-8 md:gap-16 container py-6 md:py-12'>
       <div className='flex flex-col items-center gap-2 text-center'>
         <h1 className='text-3xl font-bold'>From The Blog</h1>
-        <p className='text-balance text-native-700'>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+        <p className='text-balance text-native-700'>Insights, Updates, and Stories Worth Reading.</p>
       </div>
 
       <div>
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8'>
           {
             blogs.map((blog: BlogProps) => (
-              <div key={blog.id} className='w-full h-fit flex flex-col gap-2 cursor-pointer'>
-                <div className='w-full aspect-video mb-2 bg-slate-300 rounded-md'></div>
-                <h2 className='text-l font-bold'>{blog.title}</h2>
-                <p className='text-slate-700 line-clamp-3'>{blog.body}</p>
-              </div>
+              <BlogCard key={blog.id} id={blog.id} user_id={blog.user_id} title={blog.title} body={blog.body} />
             ))
           }
         </div>
