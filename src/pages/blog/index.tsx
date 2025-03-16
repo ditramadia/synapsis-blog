@@ -84,7 +84,7 @@ function BlogPage({ initialBlogs, initialPage, initialPageSize, totalPages, tota
   return (
     <>
       <Head>
-        <title>Synapsis | Blogs</title>
+        <title>Synapsis | Blog</title>
       </Head>
       <main className='flex flex-col gap-8 md:gap-16 container py-6 md:py-12'>
         <div className='flex flex-col items-center gap-2 text-center'>

@@ -9,8 +9,11 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        main: {
+          500: "#00a0dd"
+        },
         native: {
-          100: "#f2f2f2",
+          100: "#fcfcfc",
           700: "#696969",
           900: "#1b1b1b"
         }
