@@ -154,10 +154,12 @@ function BlogComments({ blogId }: BlogCommentsProps) {
                   placeholder="Add a comment..."
                   autoSize={{
                     minRows: 1,
-                    maxRows: 5,
                   }}
                   size='large'
                   required
+                  style={{
+                    fontFamily: "Poppins, sans-serif"
+                  }}
                   {...field}
                 />
               )}

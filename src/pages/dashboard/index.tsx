@@ -103,7 +103,7 @@ function DashboardPage({ initialBlogs, initialPage, initialPageSize, totalPages,
                 <span className='col-span-4 md:col-span-9'>{blog.title}</span>
                 <div className='flex flex-wrap gap-1 col-span-2'>
                   <a href={`/blog/${blog.id}`} target='_blank' rel="noopener noreferrer">
-                    <div className='flex items-center justify-center w-8 h-8 bg-green-400 rounded-md cursor-pointer'>
+                    <div className='flex items-center justify-center w-8 h-8 bg-teal-500 rounded-md cursor-pointer'>
                       <CompassFilled className='text-native-100' />
                     </div>
                   </a>

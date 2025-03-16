@@ -3,12 +3,8 @@ import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import axios from 'axios'
-import { z } from 'zod'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
 
 import BlogComments from '@/components/blog/BlogComments'
-
 
 interface BlogProps {
   id: number,
@@ -25,18 +21,9 @@ interface UserProps {
   status: string
 }
 
-interface CommentProps {
-  id: number,
-  post_id: number,
-  name: string,
-  email: string,
-  body: string
-}
-
 interface BlogDetailProps {
   blog: BlogProps
   author: UserProps
-  comments: CommentProps[]
 }
 
 const fetchBlog = async (id: string) => {
