@@ -68,7 +68,7 @@ function BlogDetailPage() {
       </Head>
 
       <main className='container-small py-8 md:py-16'>
-        <h1 className='mb-8 text-2xl font-bold text-main-500'>Edit Blog</h1>
+        <h1 className='mb-8 text-2xl font-bold text-main-500'>New Blog</h1>
 
         <form onSubmit={handleSubmit(handlePost)} className='flex flex-col gap-4 md:gap-8'>
           <div className='flex flex-col gap-4 md:gap-8'>

@@ -4,17 +4,13 @@ import Head from 'next/head';
 import { useRouter } from 'next/router'
 import axios from 'axios'
 import { useQuery } from '@tanstack/react-query'
-import { Pagination } from "antd";
+import Image from 'next/image';
 
+import { Pagination } from "antd";
 import BlogCard from '@/components/blog/BlogCard';
 import BlogSkeleton from '@/components/blog/BlogSkeleton';
 
-interface BlogProps {
-  id: number,
-  user_id: number,
-  title: string,
-  body: string
-}
+import BlogProps from '@/types/Blog';
 
 interface BlogPageProps {
   initialBlogs: BlogProps[]
@@ -40,12 +36,9 @@ const fetchBlogs = async (page: number, pageSize: number) => {
       totalItems: Number(response.headers["x-pagination-total"]) || 50,
     }
   } catch (error) {
-    // TODO: Handle error
-    console.error("Error fetching blogs:", error)
-
+    // TODO: Navigate to Internal Server Error Page 
     return {
       data: [],
-      error: true
     }
   }
 }
@@ -70,9 +63,6 @@ function BlogPage({ initialBlogs, initialPage, initialPageSize, totalPages, tota
 
   const blogs = data.data
 
-  // TODO: Implement a better error message
-  if (isError) return <p>Failed to load blogs.</p>
-
   const handlePageChange = (newPage: number, newPageSize: number) => {
     window.scrollTo({ top: 0, behavior: "smooth" })
     setPageSize(newPageSize)
@@ -94,7 +84,14 @@ function BlogPage({ initialBlogs, initialPage, initialPageSize, totalPages, tota
         </div>
 
         <div>
-          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8'>
+          {
+            isError || !blogs.length ?
+            <div className='mx-auto py-20 text-center'>
+              <p className='text-xl font-bold text-native-400'>No Data Found</p>
+              <p className='text-native-400'>Sorry, we couldn't find what you're looking for</p>
+            </div> 
+            :
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8'>
             {
               isFetching ?
               Array.from({ length: pageSize }).map((_, i) => (
@@ -105,6 +102,7 @@ function BlogPage({ initialBlogs, initialPage, initialPageSize, totalPages, tota
               ))
             }
           </div>
+          }
 
           <div className='my-8 md:my-16'>
             <Pagination align="center" defaultCurrent={1} pageSize={pageSize} pageSizeOptions={[8, 12, 16]} total={totalItems} onChange={handlePageChange}/>
