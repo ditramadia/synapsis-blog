@@ -14,7 +14,7 @@ const { Password }= Input
 
 const signInSchema = z.object({
   email: z.string().email("Invalid email address"),
-  password: z.string().min(6, "Passwordd must be at least 6 characters")
+  password: z.string().min(6, "Password must be at least 6 characters")
 })
 
 function SignInPage() {
@@ -22,6 +22,7 @@ function SignInPage() {
     control,
     handleSubmit,
     setError,
+    reset,
     formState: { errors }
   } = useForm({
     resolver: zodResolver(signInSchema)
@@ -37,12 +38,13 @@ function SignInPage() {
       const { data } = await axios.post("/api/sign-in", { email, password })
 
       dispatch(signin(data.data))
+      reset()
       router.push('/')
     } catch (error: any) {
       if (error.code === 500) {
         setError("password", {
           type: "server",
-          message: "Internal server error. Try again later",
+          message: "Failed to sign in. Try again later",
         });
       } else {
         setError("password", {

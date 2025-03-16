@@ -1,11 +1,14 @@
 import React from 'react'
 import { GetServerSideProps } from 'next'
 import Head from 'next/head'
-import Link from 'next/link'
 import Image from 'next/image'
 import axios from 'axios'
+import { z } from 'zod'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 
-import BlogComment from '@/components/blog/BlogComment'
+import BlogComments from '@/components/blog/BlogComments'
+
 
 interface BlogProps {
   id: number,
@@ -32,7 +35,7 @@ interface CommentProps {
 
 interface BlogDetailProps {
   blog: BlogProps
-  user: UserProps
+  author: UserProps
   comments: CommentProps[]
 }
 
@@ -76,27 +79,8 @@ const fetchUser = async (id: string) => {
   }
 }
 
-const fetchComments = async (id: string) => {
-  try {
-    const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/public/v2/posts/${id}/comments`, {
-      headers: {
-        Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
-      }
-    })
-  
-    return {
-      data: response.data
-    }
-  } catch (error) {
-    // TODO: Handle error
-    console.error('Error fetching blog comments:', error)
-    return {
-      data: [],
-    }
-  }
-}
+function BlogDetailPage({ blog, author }: BlogDetailProps) {
 
-function BlogDetailPage({ blog, user, comments }: BlogDetailProps) {
   return (
     <>
       <Head>
@@ -133,7 +117,7 @@ function BlogDetailPage({ blog, user, comments }: BlogDetailProps) {
               />
             </div>
             <div>
-              <p className='font-bold'>{user.name}</p>
+              <p className='font-bold'>{author?.name ? author?.name : 'Anonymous'}</p>
               <p className='text-slate-400'>Author</p>
             </div>
           </div>
@@ -144,29 +128,7 @@ function BlogDetailPage({ blog, user, comments }: BlogDetailProps) {
           <div className='text-justify text-slate-400'>{blog.body}</div>
         </div>
 
-        <div className='flex flex-col gap-6'>
-          <h2 className='font-bold text-lg'>Comments</h2>
-          {
-            comments.length ?
-            <div className='flex flex-col gap-4'>
-              {
-                comments.map((comment) => (
-                  <BlogComment 
-                    key={comment.id}
-                    name={comment.name}
-                    body={comment.body}
-                  />
-                ))
-              }
-            </div> :
-            <p className='text-slate-400'>No comments yet</p>
-          }
-
-          <div className='mx-auto'>
-            {/* TODO: Detect if user is signed in */}
-            <p><Link href='/sign-in'><span className='underline text-main-500'>Sign in</span></Link> to comment</p>
-          </div>
-        </div>
+        <BlogComments blogId={blog.id} />
       </main>
     </>
   )
@@ -187,11 +149,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 
   const { data: blog } = await fetchBlog(id)
-  const { data: user } = await fetchUser(blog.user_id) 
-  const { data: comments } = await fetchComments(id)
+  const { data: author } = await fetchUser(blog.user_id) 
 
   return {
-    props: { blog, user, comments }
+    props: { blog, author }
   }
 }
 
