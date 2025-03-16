@@ -51,7 +51,7 @@ function BlogPage({ initialBlogs, initialPage, initialPageSize, totalPages, tota
   const router = useRouter()
   const currentPage = Number(router.query.page) || initialPage
   const [pageSize, setPageSize] = useState<number>(12)
-  
+
   const { data, isFetching, isError } = useQuery<BlogApiResponseProps>({
     queryKey: ["blogs", currentPage, pageSize],
     queryFn: () => fetchBlogs(currentPage, pageSize),
@@ -61,11 +61,13 @@ function BlogPage({ initialBlogs, initialPage, initialPageSize, totalPages, tota
       pageSize: initialPageSize,
       currentPage: initialPage,
       totalItems,
-    }
+    },
+    refetchOnWindowFocus: false
   })
 
   const blogs = data.data
 
+  // TODO: Implement a better error page
   if (isError) return <p>Failed to load blogs.</p>
 
   const handlePageChange = (newPage: number, newPageSize: number) => {

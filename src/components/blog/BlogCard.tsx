@@ -12,6 +12,7 @@ function BlogCard(props: BlogCardProps) {
 
   return (
     <div className='w-full h-fit flex flex-col gap-2 cursor-pointer'>
+      {/* TODO: Add an actual random image */}
       <div className='w-full aspect-video mb-2 bg-slate-300 rounded-md'></div>
       <h2 className='text-l font-bold'>{title}</h2>
       <p className='text-slate-700 line-clamp-3'>{body}</p>
