@@ -3,6 +3,7 @@ import { GetServerSideProps } from 'next'
 import axios from 'axios'
 import Head from 'next/head'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 import { Button, Input } from 'antd'
 const { TextArea } = Input;
@@ -39,6 +40,22 @@ const fetchBlog = async (id: string) => {
 }
 
 function BlogDetailPage({ blog }: BlogDetailProps) {
+  const router = useRouter()
+  
+  const handleDeleteBlog = async () => {
+    try {
+      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/public/v2/posts/${blog.id}`, {
+        headers: {
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`
+        }
+      })
+
+      router.push(`/dashboard`)
+    } catch (error) {
+      console.error("Error", error)
+    }
+  }
+
   return (
     <>
       <Head>
@@ -116,7 +133,7 @@ function BlogDetailPage({ blog }: BlogDetailProps) {
                 <Button color='orange' type="primary" size='large' block={true}>Edit</Button>
               </div>
             </Link>
-            <div className='w-20 self-end'>
+            <div onClick={handleDeleteBlog} className='w-20 self-end'>
               <Button color='danger' type="primary" size='large' block={true}>Delete</Button>
             </div>
           </div>

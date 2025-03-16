@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { z } from 'zod'
 import { Controller, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter } from 'next/navigation'
 
 import { Button, Input } from 'antd'
 const { TextArea } = Input;
@@ -49,6 +50,8 @@ const blogSchema = z.object({
 })
 
 function BlogDetailPage({ blog }: BlogDetailProps) {
+  const router = useRouter()
+
   const { 
     control,
     handleSubmit,
@@ -77,6 +80,8 @@ function BlogDetailPage({ blog }: BlogDetailProps) {
           Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
         }
        })
+
+       router.push(`/dashboard/blog/${blog.id}`)
     } catch (error: any) {
       console.error("Error", error)
     }

@@ -117,9 +117,6 @@ function DashboardPage({ initialBlogs, initialPage, initialPageSize, totalPages,
                       <EditFilled className='text-native-100' />
                     </div>
                   </Link>
-                  <div className='flex items-center justify-center w-8 h-8 bg-red-400 rounded-md cursor-pointer'>
-                    <DeleteFilled className='text-native-100' />
-                  </div>
                 </div>
               </div>
             ))
