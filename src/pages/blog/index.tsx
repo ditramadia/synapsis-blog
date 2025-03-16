@@ -86,10 +86,11 @@ function BlogPage({ initialBlogs, initialPage, initialPageSize, totalPages, tota
       <Head>
         <title>Synapsis | Blog</title>
       </Head>
+      
       <main className='flex flex-col gap-8 md:gap-16 container py-6 md:py-12'>
         <div className='flex flex-col items-center gap-2 text-center'>
-          <h1 className='text-3xl font-bold'>From The Blog</h1>
-          <p className='text-balance text-native-700'>Insights, Updates, and Stories Worth Reading.</p>
+          <h1 className='text-main-500 text-3xl font-bold'>From The Blog</h1>
+          <p className='text-balance text-native-400'>Insights, Updates, and Stories Worth Reading.</p>
         </div>
 
         <div>

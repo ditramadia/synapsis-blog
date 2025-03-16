@@ -10,7 +10,7 @@ function Footer() {
       <div className='grid grid-cols-2 md:grid-cols-4 gap-4 w-[400px] mx-auto'>
         {
           navigation.map((nav, i) => (
-            <div key={i} className='mx-auto text-native-700 cursor-pointer transition-colors duration-150 ease-in-out hover:text-native-900'>
+            <div key={i} className='mx-auto text-native-400 cursor-pointer transition-colors duration-150 ease-in-out hover:text-native-900'>
               <Link href={nav.url}>
                 <span>{nav.text}</span>
               </Link>
@@ -20,29 +20,29 @@ function Footer() {
       </div>
 
       <div className='flex justify-center gap-16'>
-        <Link href="/">
-          <div className='text-native-700 text-2xl transition-colors duration-150 ease-in-out hover:text-native-900'>
+        <a href="https://www.linkedin.com/" target='_blank' rel='noopener noreferrer'>
+          <div className='text-native-400 text-2xl transition-colors duration-150 ease-in-out hover:text-main-500'>
             <LinkedinOutlined />
           </div>
-        </Link>
-        <Link href="/">
-          <div className='text-native-700 text-2xl transition-colors duration-150 ease-in-out hover:text-native-900'>
+        </a>
+        <a href="https://www.facebook.com/" target='_blank' rel='noopener noreferrer'>
+          <div className='text-native-400 text-2xl transition-colors duration-150 ease-in-out hover:text-main-500'>
             <FacebookOutlined />
           </div>
-        </Link>
-        <Link href="/">
-          <div className='text-native-700 text-2xl transition-colors duration-150 ease-in-out hover:text-native-900'>
+        </a>
+        <a href="https://www.instagram.com/" target='_blank' rel='noopener noreferrer'>
+          <div className='text-native-400 text-2xl transition-colors duration-150 ease-in-out hover:text-main-500'>
             <InstagramOutlined/>
           </div>
-        </Link>
-        <Link href="/">
-          <div className='text-native-700 text-2xl transition-colors duration-150 ease-in-out hover:text-native-900'>
+        </a>
+        <a href="https://www.twitter.com/" target='_blank' rel='noopener noreferrer'>
+          <div className='text-native-400 text-2xl transition-colors duration-150 ease-in-out hover:text-main-500'>
             <XOutlined />
           </div>
-        </Link>
+        </a>
       </div>
 
-      <div className='mx-auto text-sm text-native-700'>
+      <div className='mx-auto text-sm text-native-400'>
         <p>&copy; 2025 Synapsis Blog. All rights reserved.</p>
       </div>
     </div>

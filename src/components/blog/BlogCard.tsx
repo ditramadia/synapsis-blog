@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
@@ -18,10 +19,22 @@ function BlogCard(props: BlogCardProps) {
   return (
     <Link href={`/blog/${generateSlug(title)}-${id}`}>
       <div className='w-full h-fit flex flex-col gap-2 cursor-pointer'>
-        {/* TODO: Add an actual random image */}
-        <div className='w-full aspect-video mb-2 bg-slate-300 rounded-md'></div>
+        <div className='relative w-full aspect-video rounded-md overflow-hidden group'>
+          <Image 
+            src={`https://picsum.photos/800/600?random=${Math.random()}`} 
+            alt='Blog thumbnail'
+            className='transition-transform ease-in-out duration-150 group-hover:scale-125' 
+            objectFit='cover' 
+            fill={true}
+            loading='lazy'
+            placeholder="blur"
+            blurDataURL={`data:image/svg+xml;base64,${btoa(
+              `<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><rect width="100%" height="100%" fill="#cbd5e1"/></svg>`
+            )}`}
+          />
+        </div>
         <h2 className='text-l font-bold'>{title}</h2>
-        <p className='text-slate-700 line-clamp-3'>{body}</p>
+        <p className='text-native-400 line-clamp-3'>{body}</p>
       </div>
     </Link>
   )

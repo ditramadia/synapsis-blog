@@ -14,7 +14,7 @@ const config: Config = {
         },
         native: {
           100: "#fcfcfc",
-          700: "#696969",
+          400: "#94a3b8",
           900: "#1b1b1b"
         }
       }
