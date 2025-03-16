@@ -1,8 +1,9 @@
 import type { AppProps } from 'next/app'
 
+import '@fontsource/poppins';
 import '@/styles/globals.css'
 import '@/styles/layout.css'
-import '@fontsource/poppins';
+import '@/styles/skeleton.css'
 
 import Navbar from '@/components/navigation/Navbar'
 import Footer from '@/components/navigation/Footer';

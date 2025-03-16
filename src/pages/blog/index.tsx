@@ -3,9 +3,10 @@ import { GetServerSideProps } from "next";
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useQuery } from '@tanstack/react-query'
-
 import { Pagination } from "antd";
+
 import BlogCard from '@/components/blog/BlogCard';
+import BlogSkeleton from '@/components/blog/BlogSkeleton';
 
 interface BlogProps {
   id: number,
@@ -31,6 +32,8 @@ interface BlogPageProps {
 }
 
 const fetchBlogs = async (page: number, pageSize: number): Promise<BlogApiResponseProps> => {
+  await new Promise((resolve) => setTimeout(resolve, 3000));
+  
   const response: any = await axios.get(`https://gorest.co.in/public/v2/posts`, {
     params: { page, per_page: pageSize },
   })
@@ -49,7 +52,7 @@ function BlogPage({ initialBlogs, initialPage, initialPageSize, totalPages, tota
   const currentPage = Number(router.query.page) || initialPage
   const [pageSize, setPageSize] = useState<number>(12)
   
-  const { data, isLoading, isError } = useQuery<BlogApiResponseProps>({
+  const { data, isFetching, isError } = useQuery<BlogApiResponseProps>({
     queryKey: ["blogs", currentPage, pageSize],
     queryFn: () => fetchBlogs(currentPage, pageSize),
     initialData: {
@@ -63,12 +66,14 @@ function BlogPage({ initialBlogs, initialPage, initialPageSize, totalPages, tota
 
   const blogs = data.data
 
-  if (isLoading) return <p>Loading...</p>
   if (isError) return <p>Failed to load blogs.</p>
 
   const handlePageChange = (newPage: number, newPageSize: number) => {
+    window.scrollTo({ top: 0, behavior: "smooth" })
     setPageSize(newPageSize)
-    router.push(`/blog?page=${newPage}`)
+    router.push(`/blog?page=${newPage}`, undefined, {
+      shallow: true
+    })
   }
 
   return (
@@ -81,6 +86,10 @@ function BlogPage({ initialBlogs, initialPage, initialPageSize, totalPages, tota
       <div>
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8'>
           {
+            isFetching ?
+            Array.from({ length: pageSize }).map((_, i) => (
+              <BlogSkeleton key={i} />
+            )) :
             blogs.map((blog: BlogProps) => (
               <BlogCard key={blog.id} id={blog.id} user_id={blog.user_id} title={blog.title} body={blog.body} />
             ))
