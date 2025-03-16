@@ -7,10 +7,10 @@ const navigation = [
     text: 'About',
     url: '/about'
   },
-  {
-    text: 'Contact',
-    url: '/contact'
-  },
+  // {
+  //   text: 'Contact',
+  //   url: '/contact'
+  // },
 ]
 
 export default navigation
