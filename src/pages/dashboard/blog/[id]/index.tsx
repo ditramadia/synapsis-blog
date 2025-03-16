@@ -108,16 +108,16 @@ function BlogDetailPage({ blog }: BlogDetailProps) {
           <div className='flex flex-wrap justify-end gap-2'>
             <a href={`/blog/${blog.id}`} target='_blank' rel="noopener noreferrer">
               <div className='w-20 self-end'>
-                <Button color='green' type="primary" size='large' block={true} htmlType='submit'>Visit</Button>
+                <Button color='green' type="primary" size='large' block={true}>Visit</Button>
               </div>
             </a>
             <Link href={`/dashboard/blog/${blog.id}/edit`}>
               <div className='w-20 self-end'>
-                <Button color='orange' type="primary" size='large' block={true} htmlType='submit'>Edit</Button>
+                <Button color='orange' type="primary" size='large' block={true}>Edit</Button>
               </div>
             </Link>
             <div className='w-20 self-end'>
-              <Button color='danger' type="primary" size='large' block={true} htmlType='submit'>Delete</Button>
+              <Button color='danger' type="primary" size='large' block={true}>Delete</Button>
             </div>
           </div>
         </div>
