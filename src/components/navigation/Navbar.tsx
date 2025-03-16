@@ -1,10 +1,13 @@
 import React from 'react'
-import NavbarItem from './NavbarItem'
-
 import navigation from '@/settings/navigation';
 import Link from 'next/link';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
+
+import NavbarItem from './NavbarItem'
 
 function Navbar() {
+  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
 
   return (
     <div className='container py-4 md:py-6 flex flex-col md:flex-row md:justify-between items-center gap-2'>
@@ -18,6 +21,11 @@ function Navbar() {
           navigation.map((nav, i) => 
             <NavbarItem key={i} text={nav.text} url={nav.url} />
           )
+        }
+        {
+          isAuthenticated ?
+          <NavbarItem text="Dashboard" url="/dashboard" /> :
+          <NavbarItem text="Sign In" url="/sign-in" />
         }
       </ul>
     </div>

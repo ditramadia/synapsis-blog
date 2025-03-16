@@ -2,8 +2,11 @@ import React from 'react'
 import { Controller, useForm } from 'react-hook-form';
 import Head from 'next/head'
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useDispatch } from 'react-redux';
+import { signin } from '@/store/authSlice';
 
 import { Input } from "antd";
 import { Button } from "antd";
@@ -23,8 +26,12 @@ function SignInPage() {
     resolver: zodResolver(signInSchema)
   })
 
-  const handleSignIn = (data: any) => {
-    console.log("Form submitted", data)
+  const dispatch = useDispatch()
+  const router = useRouter()
+
+  const handleSignIn = () => {
+    dispatch(signin())
+    router.push('/')
   }
 
   return (

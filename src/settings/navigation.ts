@@ -11,10 +11,6 @@ const navigation = [
     text: 'Contact',
     url: '/contact'
   },
-  {
-    text: 'Sign In',
-    url: '/sign-in'
-  },
 ]
 
 export default navigation
