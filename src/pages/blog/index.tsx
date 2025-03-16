@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 import { GetServerSideProps } from "next";
-import axios from 'axios'
+import Head from 'next/head';
 import { useRouter } from 'next/router'
+import axios from 'axios'
 import { useQuery } from '@tanstack/react-query'
 import { Pagination } from "antd";
 
 import BlogCard from '@/components/blog/BlogCard';
 import BlogSkeleton from '@/components/blog/BlogSkeleton';
-import Head from 'next/head';
 
 interface BlogProps {
   id: number,
@@ -70,7 +70,7 @@ function BlogPage({ initialBlogs, initialPage, initialPageSize, totalPages, tota
 
   const blogs = data.data
 
-  // TODO: Implement a better error page
+  // TODO: Implement a better error message
   if (isError) return <p>Failed to load blogs.</p>
 
   const handlePageChange = (newPage: number, newPageSize: number) => {
@@ -86,7 +86,7 @@ function BlogPage({ initialBlogs, initialPage, initialPageSize, totalPages, tota
       <Head>
         <title>Synapsis | Blog</title>
       </Head>
-      
+
       <main className='flex flex-col gap-8 md:gap-16 container py-6 md:py-12'>
         <div className='flex flex-col items-center gap-2 text-center'>
           <h1 className='text-main-500 text-3xl font-bold'>From The Blog</h1>
