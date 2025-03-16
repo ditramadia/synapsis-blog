@@ -1,27 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import axios from 'axios'
 
-interface User {
-  id: number
-  email: string
-  password: string
-  role: string
-}
-
-const users: User[] = [
-  {
-    id: 7773257,
-    email: 'kevin_putra@gmail.com',
-    password: 'kevin123',
-    role: 'user'
-  },
-  {
-    id: 7773258,
-    email: 'franz_kafka@gmail.com',
-    password: 'metamorphosis123',
-    role: 'admin'
-  }
-]
+import users from '@/data/user'
 
 export default async function handler(
   req: NextApiRequest,
@@ -39,7 +19,7 @@ export default async function handler(
 
   if (!user) {
     return res.status(401).json({
-      message: "Invalid email or password"
+      message: "Invalid username or password"
     })
   }
 
@@ -57,7 +37,6 @@ export default async function handler(
           id: data.id,
           email: data.email,
           name: data.name,
-          role: user.role,
         },
         token: process.env.NEXT_PUBLIC_PUBLIC_API_KEY
       }

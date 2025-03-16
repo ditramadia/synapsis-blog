@@ -13,7 +13,6 @@ function Navbar() {
   const router = useRouter()
 
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
-  const role = useSelector((state: RootState) => state.auth.user.role);
 
   const handleSignOut = async () => {
     dispatch(signout())
@@ -34,7 +33,7 @@ function Navbar() {
           )
         }
         {
-          isAuthenticated && role === 'admin' && <NavbarItem text="Dashboard" url="/dashboard" />
+          isAuthenticated && <NavbarItem text="Dashboard" url="/dashboard" />
         }
         {
           isAuthenticated ?
