@@ -10,6 +10,7 @@ import { RootState } from '@/store'
 import useAuthRedirect from '@/hooks/useAuthRedirect'
 
 import { Button, Input } from 'antd'
+import { Slide, toast } from 'react-toastify'
 const { TextArea } = Input;
 
 const blogSchema = z.object({
@@ -44,17 +45,37 @@ function BlogCreatePage() {
         user_id: author_id,
         title,
         body
-       }, {
+        }, {
         headers: {
           Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
         }
-       })
+      })
 
-       // TODO: Open Toast
-       const id = response.data.id
-       router.push(`/dashboard/blog/${id}`)
+      toast.success('Blog posted succcessfully', {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Slide,
+      });
+      const id = response.data.id
+      router.push(`/dashboard/blog/${id}`)
     } catch (error: any) {
-      // TODO: Open Toast
+      toast.error('Failed posting blog', {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Slide,
+      });
       console.error("Error", error)
     }
   }

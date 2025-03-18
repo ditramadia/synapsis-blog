@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import axios from 'axios'
-import { Controller, useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/store';
+import { Controller, useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
+import { useSelector } from 'react-redux'
+import { RootState } from '@/store'
 
-import { Input, Button } from "antd";
-const { TextArea } = Input;
+import { Input, Button } from "antd"
+const { TextArea } = Input
 import BlogComment from '@/components/blog/BlogComment'
 
-import CommentProps from '@/types/Comment';
+import CommentProps from '@/types/Comment'
 
 interface BlogCommentsProps {
   blogId: number
@@ -24,7 +24,7 @@ const commentSchema = z.object({
 })
 
 function BlogComments({ blogId }: BlogCommentsProps) {
-  const user = useSelector((state: RootState) => state.auth.user);
+  const user = useSelector((state: RootState) => state.auth.user)
   const [comments, setComments] = useState<CommentProps[]>([])
 
   const fetchComments = async () => {
@@ -50,7 +50,6 @@ function BlogComments({ blogId }: BlogCommentsProps) {
     handleSubmit,
     setError,
     reset,
-    formState: { errors }
   } = useForm({
     resolver: zodResolver(commentSchema),
     defaultValues: {
@@ -80,7 +79,7 @@ function BlogComments({ blogId }: BlogCommentsProps) {
       setError("comment", {
         type: "server",
         message: "Failed to post comment. Try again later",
-      });
+      })
     }
   }
 

@@ -12,6 +12,7 @@ import '@/styles/skeleton.css'
 
 import Navbar from '@/components/navigation/Navbar'
 import Footer from '@/components/navigation/Footer';
+import { ToastContainer } from 'react-toastify';
 
 const queryClient = new QueryClient()
 
@@ -23,12 +24,17 @@ export default function App({ Component, pageProps }: CustomAppProps) {
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-        {!Component.noLayout && <Navbar />}
-        <QueryClientProvider client={queryClient}>
-          <Component {...pageProps} />
-          <ReactQueryDevtools initialIsOpen={false} />
-        </QueryClientProvider>
-        {!Component.noLayout && <Footer />}
+        <div className='flex flex-col min-h-screen'>
+          <div className='flex-1'>
+            {!Component.noLayout && <Navbar />}
+            <QueryClientProvider client={queryClient}>
+              <Component {...pageProps} />
+              <ReactQueryDevtools initialIsOpen={false} />
+            </QueryClientProvider>
+          </div>
+          {!Component.noLayout && <Footer />}
+          <ToastContainer />
+        </div>
       </PersistGate>
     </Provider>
   )

@@ -14,7 +14,7 @@ const generateSlug = (title: string) => {
 }
 
 function BlogCard(props: BlogCardProps) {
-  const { id, user_id, title, body } = props
+  const { id, title, body } = props
 
   return (
     <Link href={`/blog/${generateSlug(title)}-${id}`}>

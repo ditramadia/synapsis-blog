@@ -8,6 +8,7 @@ import { Controller, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
 import useAuthRedirect from '@/hooks/useAuthRedirect'
+import { Slide, toast } from 'react-toastify'
 
 import { Button, Input } from 'antd'
 const { TextArea } = Input;
@@ -73,17 +74,36 @@ function BlogDetailPage({ blog }: BlogEditProps) {
         user_id: author_id,
         title,
         body
-       }, {
+        }, {
         headers: {
           Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
         }
-       })
+        })
 
-       // TODO: Open Toast
-       router.push(`/dashboard/blog/${blog.id}`)
+        toast.success('Blog edited succcessfully', {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          transition: Slide,
+        });
+        router.push(`/dashboard/blog/${blog.id}`)
     } catch (error: any) {
-      // TODO: Open Toast
-      console.error("Error", error)
+      toast.success('Failed editing blog', {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Slide,
+      });
     }
   }
 

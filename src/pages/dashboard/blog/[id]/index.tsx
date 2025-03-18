@@ -5,6 +5,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import useAuthRedirect from '@/hooks/useAuthRedirect'
+import { Slide, toast } from 'react-toastify'
 
 import { Button, Input } from 'antd'
 const { TextArea } = Input;
@@ -47,11 +48,30 @@ function BlogDetailPage({ blog }: BlogDetailPageProps) {
         }
       })
 
-      // TODO: Open Toast
+      toast.success('Blog deleted succcessfully', {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Slide,
+      });
       router.push(`/dashboard`)
     } catch (error) {
-      // TODO: Open Toast
-      console.error("Error", error)
+      toast.error('Failed deleting blog', {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Slide,
+      });
     }
   }
 

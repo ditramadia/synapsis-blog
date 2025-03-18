@@ -1,16 +1,15 @@
 import React, { useState } from 'react'
-import { GetServerSideProps } from "next";
-import Head from 'next/head';
+import { GetServerSideProps } from "next"
+import Head from 'next/head'
 import { useRouter } from 'next/router'
 import axios from 'axios'
 import { useQuery } from '@tanstack/react-query'
-import Image from 'next/image';
 
-import { Pagination } from "antd";
-import BlogCard from '@/components/blog/BlogCard';
-import BlogSkeleton from '@/components/blog/BlogSkeleton';
+import { Pagination } from "antd"
+import BlogCard from '@/components/blog/BlogCard'
+import BlogSkeleton from '@/components/blog/BlogSkeleton'
 
-import BlogProps from '@/types/Blog';
+import BlogProps from '@/types/Blog'
 
 interface BlogPageProps {
   initialBlogs: BlogProps[]
@@ -88,7 +87,7 @@ function BlogPage({ initialBlogs, initialPage, initialPageSize, totalPages, tota
             isError || !blogs.length ?
             <div className='mx-auto py-20 text-center'>
               <p className='text-xl font-bold text-native-400'>No Data Found</p>
-              <p className='text-native-400'>Sorry, we couldn't find what you're looking for</p>
+              <p className='text-native-400'>Sorry, we couldn&apost find what you&aposre looking for</p>
             </div> 
             :
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8'>
