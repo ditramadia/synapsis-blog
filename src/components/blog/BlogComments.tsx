@@ -109,7 +109,8 @@ function BlogComments({ blogId }: BlogCommentsProps) {
             src='/images/profile-placeholder.png'
             alt='Profile image'
             objectFit='cover'
-            fill={true}
+            fill
+            sizes="(max-width: 768px) 100vw)"
           />
         </div>
         <form onSubmit={handleSubmit(handleComment)} className='flex flex-col gap-2 flex-1'>

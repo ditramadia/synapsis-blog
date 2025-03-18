@@ -65,7 +65,8 @@ function BlogDetailPage({ blog, author }: BlogDetailProps) {
             src={`https://picsum.photos/800/600?random=${Math.random()}`} 
             alt='Blog cover image' 
             objectFit='cover' 
-            fill={true}
+            fill
+            sizes="(max-width: 768px) 100vw)"
             loading='lazy'
             placeholder="blur"
             blurDataURL={`data:image/svg+xml;base64,${btoa(

@@ -62,6 +62,7 @@ function BlogCreatePage() {
         theme: "colored",
         transition: Slide,
       });
+      
       const id = response.data.id
       router.push(`/dashboard/blog/${id}`)
     } catch (error: any) {
@@ -76,7 +77,6 @@ function BlogCreatePage() {
         theme: "colored",
         transition: Slide,
       });
-      console.error("Error", error)
     }
   }
 

@@ -10,8 +10,9 @@ function BlogComment({ name, body }: CommentProps) {
         <Image 
           src='/images/profile-placeholder.png'
           alt='Profile image'
+          sizes="(max-width: 768px) 100vw)"
           objectFit='cover'
-          fill={true}
+          fill
         />
       </div>
 

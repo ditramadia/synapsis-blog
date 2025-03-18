@@ -25,7 +25,8 @@ function BlogCard(props: BlogCardProps) {
             alt='Blog thumbnail'
             className='transition-transform ease-in-out duration-150 group-hover:scale-125' 
             objectFit='cover' 
-            fill={true}
+            fill
+            sizes="(max-width: 768px) 100vw)"
             loading='lazy'
             placeholder="blur"
             blurDataURL={`data:image/svg+xml;base64,${btoa(
